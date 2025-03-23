@@ -1,3 +1,5 @@
+# import random
+
 # def main():
 #     num1 = int(input("write the first number: "))
 #     num2 = int(input("write the second number: "))
@@ -69,6 +71,137 @@
 # # Python file to call the main() function.
 # if __name__ == '__main__':
 #     main()
+
+
+# prompt = "what i do"
+# joke = "hahahaha"
+# sorry = "i am sorry try again"
+
+# def main():
+
+#     user_input = input(prompt)
+
+#     if user_input == "joke":
+#         print(joke)
+#     else:
+#         print(sorry)
+
+# if __name__ == "__main__":
+#     main()
+
+# prompt = "what you want"
+# joke = "here is a jooke for yoy hahahhaha"
+# sorry = "sorry i only tell a joke"
+
+# def main():
+
+#     user_input = input(f"{prompt}: ")
+
+#     if "joke" in user_input:
+#         print(joke)
+#     else:
+#         print(sorry)
+
+# if __name__ == "__main__":
+#     main()
+
+
+
+# def main():
+#     curr_value = int(input("Enter a number: "))
+
+#     while curr_value < 100:
+#         curr_value = curr_value * 2
+#         print(curr_value)
+
+# if __name__ == '__main__':
+#     main()
+
+
+
+
+# def main():
+#     curr_value = int(input("write a number: "))
+
+#     while curr_value < 100:
+
+#         curr_value = curr_value * 2
+#         print(curr_value)
+
+# if __name__ == "__main__":
+#     main()
+
+# def main():
+#     for i in range(10, 0, -1):
+#         print(i)
+#     print("Liftoff!")
+
+# if __name__ == '__main__':
+#     main()
+
+# def main():
+#     for i in range(10,0, -1):
+#         print(i)
+#     print("Lift off")
+
+# if __name__ == "__main__":
+#     main()
+
+
+# def guees_game(x):
+
+#     random_number = random.randint(1, x)
+#     guess = 0
+
+#     while guess != random_number:
+
+#         guess = int(input(f"Guess the number between 1 and {x} : "))
+
+#         if guess < random_number:
+#             print("its to low")
+#         elif guess > random_number:
+#             print("its to high")
+
+#     print("yay congratulation!")
+
+# guees_game(10)
+
+# def guess_game(x):
+
+#     random_number = random.randint(1, x)
+#     guess = 0
+
+#     while guess != random_number:
+
+#         guess = int(input(f"Guess the number between 1 and {x} : "))
+
+#         if guess < random_number:
+#             print("Its to low")
+#         elif guess > random_number:
+#             print("Its to high")
+
+#     print("Yay congrtulation!")
+
+# guess_game(10)
+        
+# import random
+
+# N_NUMBERS = 10
+# MIN_VALUE = 1
+# MAX_VALUE = 100
+
+# def main():
+#     for i in range(N_NUMBERS):
+#         print(random.randint(MIN_VALUE, MAX_VALUE), end=" ")
+
+# if __name__ == '__main__':
+#     main()
+
+
+
+
+
+
 
 
 

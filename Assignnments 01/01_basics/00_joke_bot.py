@@ -3,9 +3,10 @@ JOKE: str = "Here is a joke for you! Panaversity GPT - Sophia is heading out to 
 SORRY: str = "Sorry I only tell jokes."
 
 def main():
-    user_input = input(PROMPT)
+  
+    user_input = input(f"{PROMPT}: ")
     
-    if user_input == "Joke":
+    if "joke" in user_input:
         print(JOKE)
     else:
         print(SORRY)

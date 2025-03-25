@@ -1,8 +1,4 @@
 
-"""
-An example program with constants
-"""
-
 INCHES_IN_FOOT: int = 12  # Conversion factor. There are 12 inches for 1 foot.
 
 def main():

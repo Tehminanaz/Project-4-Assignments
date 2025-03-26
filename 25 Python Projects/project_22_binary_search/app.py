@@ -1,91 +1,61 @@
-"""
-Beginner Python Project - Binary Search Implementation by Kylie Ying
-
-YouTube Kylie Ying: https://www.youtube.com/ycubed 
-Twitch KylieYing: https://www.twitch.tv/kylieying 
-Twitter @kylieyying: https://twitter.com/kylieyying 
-Instagram @kylieyying: https://www.instagram.com/kylieyying/ 
-Website: https://www.kylieying.com
-Github: https://www.github.com/kying18 
-Programmer Beast Mode Spotify playlist: https://open.spotify.com/playlist/4Akns5EUb3gzmlXIdsJkPs?si=qGc4ubKRRYmPHAJAIrCxVQ 
-"""
-
 import random
 import time
 
-# Implementation of binary search algorithm!!
+# Implementing and comparing binary search and naive search methods
 
-# We will prove that binary search is faster than naive search!
-
-
-# Essence of binary search:
-# If you have a sorted list and you want to search this array for something,
-# You could go through each item in the list and ask, is this equal to what we're looking for?
-# But we can make this *faster* by leveraging the fact that our array is sorted!
-# Binary search ~ O(log(n)), naive search ~ O(n)
-
-# In these two examples, l is a list in ascending order, and target is something that we're looking for
-# Return -1 if not found
-
-
-# naive search: scan entire list and ask if its equal to the target
-# if yes, return the index
-# if no, then return -1
+# Naive search (Linear Search): 
+# This method scans the entire list one by one to find the target.
+# If found, it returns the index; otherwise, it returns -1.
 def naive_search(l, target):
-    # example l = [1, 3, 10, 12]
-    for i in range(len(l)):
-        if l[i] == target:
-            return i
-    return -1
+    for i in range(len(l)):  # Loop through the entire list
+        if l[i] == target:   # If the target is found
+            return i         # Return its index
+    return -1  # If not found, return -1
 
 
-# binary search uses divide and conquer!
-# we will leverage the fact that our list is SORTED
+# Binary search (Efficient Search using Divide and Conquer):
+# This method works only on sorted lists.
+# It repeatedly divides the list into two halves to find the target quickly.
 def binary_search(l, target, low=None, high=None):
     if low is None:
-        low = 0
+        low = 0  # Start from the first index
     if high is None:
-        high = len(l) - 1
+        high = len(l) - 1  # End at the last index
 
-    if high < low:
-        return -1
+    if high < low:  
+        return -1  # If the range is invalid, return -1 (not found)
 
-    # example l = [1, 3, 5, 10, 12]  # should return 3
-    midpoint = (low + high) // 2  # 2
+    midpoint = (low + high) // 2  # Find the middle index
 
-    # we'll check if l[midpoint] == target, and if not, we can find out if
-    # target will be to the left or right of midpoint
-    # we know everything to the left of midpoint is smaller than the midpoint
-    # and everything to the right is larger
-    if l[midpoint] == target:
-        return midpoint
-    elif target < l[midpoint]:
-        return binary_search(l, target, low, midpoint-1)
-    else:
-        # target > l[midpoint]
-        return binary_search(l, target, midpoint+1, high)
+    if l[midpoint] == target:  # If the middle element is the target
+        return midpoint  # Return its index
+    elif target < l[midpoint]:  
+        # If target is smaller, search in the left half
+        return binary_search(l, target, low, midpoint - 1)
+    else:  
+        # If target is greater, search in the right half
+        return binary_search(l, target, midpoint + 1, high)
 
-if __name__=='__main__':
-    # l = [1, 3, 5, 10, 12]
-    # target = 7
-    # print(naive_search(l, target))
-    # print(binary_search(l, target))
 
-    length = 10000
-    # build a sorted list of length 10000
+if __name__ == '__main__':
+    length = 10000  # Define the length of the list
+
+    # Create a sorted list of 10000 unique random numbers
     sorted_list = set()
     while len(sorted_list) < length:
-        sorted_list.add(random.randint(-3*length, 3*length))
-    sorted_list = sorted(list(sorted_list))
+        sorted_list.add(random.randint(-3 * length, 3 * length))  # Add random numbers
+    sorted_list = sorted(list(sorted_list))  # Convert set to sorted list
 
+    # Measure time taken by naive search
     start = time.time()
     for target in sorted_list:
-        naive_search(sorted_list, target)
+        naive_search(sorted_list, target)  # Search each element using naive search
     end = time.time()
-    print("Naive search time: ", (end - start), "seconds")
+    print("Naive search time: ", (end - start), "seconds")  # Print execution time
 
+    # Measure time taken by binary search
     start = time.time()
     for target in sorted_list:
-        binary_search(sorted_list, target)
+        binary_search(sorted_list, target)  # Search each element using binary search
     end = time.time()
-    print("Binary search time: ", (end - start), "seconds")
+    print("Binary search time: ", (end - start), "seconds")  # Print execution time

@@ -1,143 +1,104 @@
-# Multiplayer Game using Pygame
+🎮 Multiplayer Game using Pygame – by Tehmina
 
-## Project Files
+📁 Project Files
+This project has 4 Python files:
 
-The project consists of four Python files:
+server.py – This file runs the game server. It controls the whole game.
 
-1. **server.py** - The game server that manages connections and game state.
-2. **client.py** - The game client that players run to connect to the server.
-3. **network.py** - Handles network communication between client and server.
-4. **player.py** - Defines the Player class used by both client and server.
+client.py – This file is for players to play the game.
 
----
+network.py – It handles the connection between client and server.
 
-## How to Run the Game
+player.py – It creates the player and handles player movement.
 
-### Step 1: Install Dependencies
+▶️ How to Run the Game
+🔧 Step 1: Install Pygame
+If you don’t have Pygame, open the terminal and type:
 
-Ensure you have Pygame installed. If not, install it using:
-
-```sh
+sh
+Copy
+Edit
 pip install pygame
-```
+🖥 Step 2: Start the Server
+Go to the project folder in your terminal and run:
 
-### Step 2: Start the Server
-
-First, you need to start the server. Open a terminal or command prompt, navigate to the project folder, and run:
-
-```sh
+sh
+Copy
+Edit
 python server.py
-```
+You will see:
 
-You should see a message saying **"Server started"** and **"Waiting for connections..."**.
+arduino
+Copy
+Edit
+Server started  
+Waiting for connections...
+🎮 Step 3: Start the Client (Players)
+Now open a new terminal window and run:
 
-### Step 3: Start the Clients
-
-Next, open one or more additional terminals or command prompts, navigate to the project folder, and run:
-
-```sh
+sh
+Copy
+Edit
 python client.py
-```
+You can run this command in many terminals to play with more players.
 
-You can run this command in multiple terminals to have multiple players join the game.
+⌨️ Step 4: Play the Game
+Use arrow keys or W, A, S, D to move your player.
 
-### Step 4: Play the Game
+You will see other players moving on the screen.
 
-- Use the arrow keys (**↑, ↓, ←, →**) or **W, A, S, D** to move your player.
-- You will see other connected players moving in real-time.
-- The game window will close if you disconnect from the server.
+If the server stops, the game will also close.
 
----
+🔍 What Each File Does
+🧍‍♂️ player.py
+Stores the player’s position, size, and color.
 
-## What Each File Does
+Moves the player when keys are pressed.
 
-### **player.py**
+Keeps the player inside the window.
 
-This file defines the **Player** class that represents each player in the game.
+Draws the player on the screen.
 
-- Stores the player's position (**x, y**), size, and color.
-- Handles player movement based on key presses.
-- Ensures players stay within the game window.
-- Provides a method to draw the player on the screen.
+🌐 network.py
+Connects the client to the server.
 
-### **network.py**
+Sends and receives data.
 
-This file handles all network communication between the client and server.
+Uses pickle to convert Python data to bytes.
 
-- Creates a socket connection to the server.
-- Sends player data to the server.
-- Receives updated game state from the server.
-- Uses **pickle** to convert Python objects to bytes for sending over the network.
+🖧 server.py
+Starts the game server.
 
-### **server.py**
+Waits for players to join.
 
-This file runs the game server that all clients connect to.
+Gives a unique ID to each player.
 
-- Creates a socket server that listens for connections.
-- Accepts connections from clients (players).
-- Assigns each client a player ID.
-- Creates a new thread to handle each client.
-- Receives player movements from clients.
-- Updates the game state.
-- Sends the updated game state to all clients.
-- Handles client disconnections.
+Handles data from players.
 
-### **client.py**
+Sends updates to all players.
 
-This file is the main game client that players run.
+Handles player disconnection.
 
-- Initializes **Pygame** and creates a game window.
-- Connects to the server.
-- Gets a player ID from the server.
-- Creates a local player object.
-- Handles player input (key presses).
-- Sends the player's position to the server.
-- Receives updated positions of all players.
-- Draws all players on the screen.
+🕹 client.py
+Starts the Pygame window.
 
----
+Connects to the server.
 
-## Game Controls
+Creates the player.
 
-- **Up Arrow** or **W**: Move up
-- **Down Arrow** or **S**: Move down
-- **Left Arrow** or **A**: Move left
-- **Right Arrow** or **D**: Move right
-- **Close Window**: Quit the game
+Handles key presses.
 
----
+Sends player’s position to the server.
 
-## Troubleshooting
+Draws all players on the screen.
 
-### **Server Won't Start**
+⌨️ Game Controls
+↑ or W = Move up
 
-If you see an error like **"Address already in use"**:
+↓ or S = Move down
 
-1. Wait a few moments and try again.
-2. Or, edit `server.py` to use a different port number.
+← or A = Move left
 
-### **Can't Connect to Server**
+→ or D = Move right
 
-If the client can't connect to the server:
-
-1. Make sure the server is running.
-2. Check that you're using the correct server address.
-3. Ensure your firewall isn't blocking the connection.
-
-### **Game Lag**
-
-This is a simple implementation without lag compensation. Some network delay is normal.
-
----
-
-## Extending the Game
-
-You can extend this basic framework by adding:
-
-1. Game mechanics (scoring, objectives).
-2. Collision detection.
-3. More players.
-4. Different player types or abilities.
-5. Game rooms for multiple concurrent games.
-6. Chat functionality.
-7. Better graphics with sprites and animations.
+Close the window = Quit the game

@@ -4,29 +4,31 @@ import random
 from discord.ext import commands
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from .env file (like the bot token)
 load_dotenv()
 
-# Create a bot instance with intents
+# Set up bot intents (what the bot is allowed to listen to)
 intents = discord.Intents.default()
-intents.message_content = True  
+intents.message_content = True  # Enable reading message content
 
+# Create bot instance with a prefix for commands
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+# Event: When the bot is ready and online
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user.name}")
-    await bot.change_presence(activity=discord.Game(name="Fun with Humaiza! 🎉"))
+    await bot.change_presence(activity=discord.Game(name="Fun with Tehmina! 🎉"))
 
-# Message event handler for "humo"
+# Event: When a message is sent in any channel
 @bot.event
 async def on_message(message):
-    # Don't respond to bot's own messages
+    # Ignore bot's own messages
     if message.author == bot.user:
         return
     
-    # Check if message is exactly "humo"
-    if message.content.lower() == "humo":
+    # Respond if someone types "Tehmina"
+    if message.content.lower() == "Tehmina":
         responses = [
             "Hello! I'm Humo, your friendly bot! 👋",
             "You called? How can I help you today? 😊",
@@ -36,10 +38,10 @@ async def on_message(message):
         ]
         await message.channel.send(random.choice(responses))
     
-    # Process commands (this is important to keep command functionality)
+    # Process commands after handling custom messages
     await bot.process_commands(message)
 
-# Error handling
+# Error Handler: When command fails or doesn't exist
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
@@ -48,23 +50,23 @@ async def on_command_error(ctx, error):
         await ctx.send("⚠️ An error occurred.")
         print(f"Error: {error}")
 
-# Ping Command
+# !ping command - Responds with Pong!
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong! 🎣")
 
-# Hello Command
+# !hello command - Greets the user
 @bot.command()
 async def hello(ctx):
     await ctx.send(f"Hello {ctx.author.name}! 😊")
 
-# Coin Flip
+# !flip command - Flips a coin
 @bot.command()
 async def flip(ctx):
     result = random.choice(["Heads 🪙", "Tails 🪙"])
     await ctx.send(f"The coin landed on: {result}")
 
-# Rock Paper Scissors
+# !rps command - Rock, Paper, Scissors game
 @bot.command()
 async def rps(ctx, choice: str):
     options = ["rock", "paper", "scissors"]
@@ -74,6 +76,7 @@ async def rps(ctx, choice: str):
         await ctx.send("❌ Invalid choice! Choose rock, paper, or scissors.")
         return
 
+    # Determine result
     result = "It's a tie! 😐" if choice.lower() == bot_choice else \
              "You win! 🎉" if (choice.lower() == "rock" and bot_choice == "scissors") or \
                             (choice.lower() == "paper" and bot_choice == "rock") or \
@@ -82,13 +85,14 @@ async def rps(ctx, choice: str):
 
     await ctx.send(f"Your choice: {choice.capitalize()} | My choice: {bot_choice.capitalize()} \n{result}")
 
-# Riddle Game
+# Dictionary of riddles and answers
 riddles = {
     "What has to be broken before you can use it?": "egg",
     "The more of me you take, the more you leave behind. What am I?": "footsteps",
     "What can't talk but will reply when spoken to?": "echo"
 }
 
+# !riddle command - Sends a riddle and waits for answer
 @bot.command()
 async def riddle(ctx):
     question, answer = random.choice(list(riddles.items()))
@@ -106,7 +110,7 @@ async def riddle(ctx):
     except:
         await ctx.send(f"⏳ Time's up! The answer was: **{answer}**")
 
-# Random Facts
+# List of fun facts
 facts = [
     "Honey never spoils. Archaeologists found 3000-year-old honey and it was still good! 🍯",
     "Octopuses have three hearts! ❤️❤️❤️",
@@ -114,13 +118,15 @@ facts = [
     "A day on Venus is longer than a year on Venus. 🌍"
 ]
 
+# !fact command - Sends a random fact
 @bot.command()
 async def fact(ctx):
     await ctx.send(f"📜 Did you know? {random.choice(facts)}")
 
-# Word Scramble Game
+# Word list for scramble game
 words = ["python", "discord", "bot", "coding", "developer"]
 
+# !scramble command - Unscramble game
 @bot.command()
 async def scramble(ctx):
     word = random.choice(words)
@@ -139,7 +145,7 @@ async def scramble(ctx):
     except:
         await ctx.send(f"⏳ Time's up! The word was: **{word}**")
 
-# Clear Messages Command
+# !clear command - Deletes a number of messages
 @bot.command()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount: int = 5):
@@ -149,25 +155,22 @@ async def clear(ctx, amount: int = 5):
         return
     
     try:
-        # Delete messages
-        deleted = await ctx.channel.purge(limit=amount + 1)  # +1 to include the command message
-        
-        # Send confirmation message
+        deleted = await ctx.channel.purge(limit=amount + 1)  # +1 to also delete the command message
         confirmation = await ctx.send(f"🧹 Deleted {len(deleted) - 1} messages.")
         
-        # Delete confirmation message after 5 seconds
+        # Wait 5 seconds before deleting the confirmation message
         import asyncio
         await asyncio.sleep(5)
         await confirmation.delete()
     except discord.errors.HTTPException as e:
-        if e.code == 50034:  # Error code for messages older than 14 days
+        if e.code == 50034:  # Can't delete messages older than 14 days
             await ctx.send("❌ Cannot delete messages older than 14 days due to Discord limitations.")
         else:
             await ctx.send(f"❌ Error: {e}")
     except Exception as e:
         await ctx.send(f"❌ An error occurred: {e}")
 
-# Error handler for the clear command
+# Error handler for clear command
 @clear.error
 async def clear_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
@@ -178,9 +181,10 @@ async def clear_error(ctx, error):
         await ctx.send("⚠️ An error occurred while trying to clear messages.")
         print(f"Clear command error: {error}")
 
-# Run the bot
+# Get bot token from environment variable
 TOKEN = os.getenv("DISCORD_TOKEN")
 if not TOKEN:
     raise ValueError("❌ DISCORD_TOKEN not found! Check your .env file.")
 
+# Run the bot
 bot.run(TOKEN)

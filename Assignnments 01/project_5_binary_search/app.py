@@ -1,91 +1,107 @@
-"""
-Beginner Python Project - Binary Search Implementation by Kylie Ying
-
-YouTube Kylie Ying: https://www.youtube.com/ycubed 
-Twitch KylieYing: https://www.twitch.tv/kylieying 
-Twitter @kylieyying: https://twitter.com/kylieyying 
-Instagram @kylieyying: https://www.instagram.com/kylieyying/ 
-Website: https://www.kylieying.com
-Github: https://www.github.com/kying18 
-Programmer Beast Mode Spotify playlist: https://open.spotify.com/playlist/4Akns5EUb3gzmlXIdsJkPs?si=qGc4ubKRRYmPHAJAIrCxVQ 
-"""
-
 import random
 import time
+from bisect import bisect_left
 
-# Implementation of binary search algorithm!!
+# Binary Search Python Project
+# This project demonstrates naive search, recursive binary search, and built-in bisect search.
+# These searching methods are commonly discussed in interviews.
+# The program also includes user input validation and performance testing.
 
-# We will prove that binary search is faster than naive search!
-
-
-# Essence of binary search:
-# If you have a sorted list and you want to search this array for something,
-# You could go through each item in the list and ask, is this equal to what we're looking for?
-# But we can make this *faster* by leveraging the fact that our array is sorted!
-# Binary search ~ O(log(n)), naive search ~ O(n)
-
-# In these two examples, l is a list in ascending order, and target is something that we're looking for
-# Return -1 if not found
-
-
-# naive search: scan entire list and ask if its equal to the target
-# if yes, return the index
-# if no, then return -1
-def naive_search(l, target):
-    # example l = [1, 3, 10, 12]
-    for i in range(len(l)):
-        if l[i] == target:
+def naive_search(lst, target):
+    """Naive search scans the entire list for the target."""
+    for i, item in enumerate(lst):
+        if item == target:
             return i
     return -1
 
-
-# binary search uses divide and conquer!
-# we will leverage the fact that our list is SORTED
-def binary_search(l, target, low=None, high=None):
-    if low is None:
-        low = 0
+def binary_search(lst, target, low=0, high=None):
+    """Recursive binary search on a sorted list."""
     if high is None:
-        high = len(l) - 1
-
+        high = len(lst) - 1
     if high < low:
         return -1
 
-    # example l = [1, 3, 5, 10, 12]  # should return 3
-    midpoint = (low + high) // 2  # 2
-
-    # we'll check if l[midpoint] == target, and if not, we can find out if
-    # target will be to the left or right of midpoint
-    # we know everything to the left of midpoint is smaller than the midpoint
-    # and everything to the right is larger
-    if l[midpoint] == target:
+    midpoint = (low + high) // 2
+    if lst[midpoint] == target:
         return midpoint
-    elif target < l[midpoint]:
-        return binary_search(l, target, low, midpoint-1)
+    elif target < lst[midpoint]:
+        return binary_search(lst, target, low, midpoint - 1)
     else:
-        # target > l[midpoint]
-        return binary_search(l, target, midpoint+1, high)
+        return binary_search(lst, target, midpoint + 1, high)
 
-if __name__=='__main__':
-    # l = [1, 3, 5, 10, 12]
-    # target = 7
-    # print(naive_search(l, target))
-    # print(binary_search(l, target))
+def builtin_bisect_search(lst, target):
+    """Uses Python's bisect module for binary search."""
+    index = bisect_left(lst, target)
+    if index != len(lst) and lst[index] == target:
+        return index
+    return -1
 
+def performance_test():
     length = 10000
-    # build a sorted list of length 10000
-    sorted_list = set()
-    while len(sorted_list) < length:
-        sorted_list.add(random.randint(-3*length, 3*length))
-    sorted_list = sorted(list(sorted_list))
+    sorted_list = sorted(random.sample(range(-3 * length, 3 * length), length))
 
-    start = time.time()
+    # Naive search performance
+    start = time.perf_counter()
     for target in sorted_list:
         naive_search(sorted_list, target)
-    end = time.time()
-    print("Naive search time: ", (end - start), "seconds")
+    print(f"Naive search time: {time.perf_counter() - start:.4f} seconds")
 
-    start = time.time()
+    # Binary search performance
+    start = time.perf_counter()
     for target in sorted_list:
         binary_search(sorted_list, target)
-    end = time.time()
-    print("Binary search time: ", (end - start), "seconds")
+    print(f"Recursive binary search time: {time.perf_counter() - start:.4f} seconds")
+
+    # Built-in bisect search performance
+    start = time.perf_counter()
+    for target in sorted_list:
+        builtin_bisect_search(sorted_list, target)
+    print(f"Built-in bisect search time: {time.perf_counter() - start:.4f} seconds")
+
+def user_search():
+    """Allow user to enter a target number and choose search method with improved error handling and clear prompts."""
+    lst = sorted(random.sample(range(-1000, 1000), 100))
+    print("\nGenerated sorted list:")
+    print(lst)
+
+    while True:
+        user_input = input("\nEnter a number to search: ")
+        try:
+            target = int(user_input)
+            break
+        except ValueError:
+            print("Invalid input! Please enter a valid integer.")
+
+    print("Choose a search method:")
+    print("1. naive")
+    print("2. binary")
+    print("3. bisect")
+
+    method_map = {"1": "naive", "2": "binary", "3": "bisect", "naive": "naive", "binary": "binary", "bisect": "bisect"}
+
+    while True:
+        method_input = input("Enter method name or number: ").strip().lower()
+        method = method_map.get(method_input)
+        if method:
+            break
+        else:
+            print("Invalid method! Please enter '1', '2', '3' or method names (naive, binary, bisect).")
+
+    if method == 'naive':
+        result = naive_search(lst, target)
+    elif method == 'binary':
+        result = binary_search(lst, target)
+    else:
+        result = builtin_bisect_search(lst, target)
+
+    if result != -1:
+        print(f"Target found at index {result}.")
+    else:
+        print("Target not found.")
+
+if __name__ == "__main__":
+    print("\n---- Performance Test ----")
+    performance_test()
+
+    print("\n---- User Search ----")
+    user_search()

@@ -1,8 +1,4 @@
-""" Prompts the user for a weight on Earth and a planet (in separate inputs).
-Then prints the equivalent weight on that planet.
-"""
-
-# Gravity constants
+# Gravity constants for different planets
 MERCURY_GRAVITY = 0.376
 VENUS_GRAVITY = 0.889
 MARS_GRAVITY = 0.378
@@ -12,13 +8,13 @@ URANUS_GRAVITY = 0.815
 NEPTUNE_GRAVITY = 1.14
 
 def main():
-    # Prompt the user for their weight on Earth
+    # Ask the user to input their weight on Earth
     earth_weight = float(input("Enter a weight on Earth: "))
 
-    # Prompt the user for the name of a planet
+    # Ask the user to input the name of a planet
     planet = input("Enter a planet: ")
 
-    # Determine the gravitational constant for the selected planet
+    # Check the planet entered by the user and assign the corresponding gravity constant
     if planet == "Mercury":
         gravity_constant = MERCURY_GRAVITY
     elif planet == "Venus":
@@ -32,15 +28,18 @@ def main():
     elif planet == "Uranus":
         gravity_constant = URANUS_GRAVITY
     else:
-        # The only remaining valid planet is Neptune
+        # If the planet entered is not found above, it must be Neptune
         gravity_constant = NEPTUNE_GRAVITY
 
-    # Calculate equivalent weight
+    # Calculate the equivalent weight on the selected planet
     planetary_weight = earth_weight * gravity_constant
+
+    # Round the planetary weight to 2 decimal places
     rounded_planetary_weight = round(planetary_weight, 2)
 
-    # Print the result
+    # Display the equivalent weight on the selected planet
     print("The equivalent weight on " + planet + ": " + str(rounded_planetary_weight))
 
+# Call the main function when the script is executed
 if __name__ == '__main__':
     main()
